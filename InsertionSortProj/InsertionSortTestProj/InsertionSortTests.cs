@@ -1,53 +1,53 @@
+using InsertionSort;
 using NUnit.Framework;
 
-namespace InsertionSortProj
+namespace InsertionSortTestProj;
+
+[TestFixture]
+public class InsertionSortTests
 {
-    [TestFixture]
-    public class InsertionSortTests
+    private readonly Random _rnd = new();
+    
+    [Test]
+    public void RandomArraySort()
     {
-        [Test]
-        public void RandomArraySort()
-        {
-            CompareInsertionSortWithSystemSort(CreateIntArr());
-        }
+        CompareInsertionSortWithSystemSort(CreateIntArr());
+    }
 
-        [Test]
-        public void PositiveNumbersSort()
-        {
-            CompareInsertionSortWithSystemSort(new int[] { 6, 2, 9, 20, 130 });
-        }
-        
-        [Test]
-        public void NegativeAndPositiveNumbersSort()
-        {
-            CompareInsertionSortWithSystemSort(new int[] { -2, 5, 0, -16, 100 });
-        }
+    [Test]
+    public void PositiveNumbersSort()
+    {
+        CompareInsertionSortWithSystemSort(new [] { 6, 2, 9, 20, 130 });
+    }
+    
+    [Test]
+    public void NegativeAndPositiveNumbersSort()
+    {
+        CompareInsertionSortWithSystemSort(new [] { -2, 5, 0, -16, 100 });
+    }
 
-        [Test]
-        public void JustNegativeNumbersSort()
-        {
-            CompareInsertionSortWithSystemSort(new int[] { -2, -5, -3, -16, -100 });
-        }
+    [Test]
+    public void JustNegativeNumbersSort()
+    {
+        CompareInsertionSortWithSystemSort(new [] { -2, -5, -3, -16, -100 });
+    }
 
-        [Test]
-        public void EmptyListSort()
-        {
-            CompareInsertionSortWithSystemSort(Array.Empty<int>());
-        }
+    [Test]
+    public void EmptyListSort()
+    {
+        CompareInsertionSortWithSystemSort(Array.Empty<int>());
+    }
 
-        private void CompareInsertionSortWithSystemSort(int[] arr)
-        {
-            int[] expectedArr = arr.ToArray();
-            Array.Sort(expectedArr);
-            InsertionSort.Sort(arr);
-            CollectionAssert.AreEqual(expectedArr, arr);
-        }
+    private void CompareInsertionSortWithSystemSort(int[] arr)
+    {
+        var expectedArr = arr.ToArray();
+        Array.Sort(expectedArr);
+        CollectionAssert.AreEqual(expectedArr, InsertionSortProj.InsertionSort(arr));
+    }
 
-        private int[] CreateIntArr()
-        {
-            Random rnd = new Random();
-            int[] numbers = Enumerable.Range(1, rnd.Next(1,400)).OrderBy(r => rnd.Next()).ToArray();
-            return numbers;
-        }
+    private int[] CreateIntArr()
+    {
+        var numbers = Enumerable.Range(1, _rnd.Next(1,400)).OrderBy(_ => _rnd.Next()).ToArray();
+        return numbers;
     }
 }
