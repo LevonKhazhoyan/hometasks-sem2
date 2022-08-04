@@ -21,28 +21,32 @@ public class Tests
     public void DivisionByZeroUsingArrayStack()
     {
         _calculator.Calculate(InsertStringInArrayStack("1 0 /"));
-        Assert.That(_stringWriter.ToString(), Is.EqualTo("Attempted to divide by zero\r\n"));
+        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
+        Assert.That(error, Is.EqualTo("Attempted to divide by zero"));
     }
     
     [Test]
     public void DivisionByZeroUsingLinkedListStack()
     {
         _calculator.Calculate( InsertStringInLinkedListStack("1 0 /"));
-        Assert.That(_stringWriter.ToString(), Is.EqualTo("Attempted to divide by zero\r\n"));
+        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
+        Assert.That(error, Is.EqualTo("Attempted to divide by zero"));
     }
     
     [Test]
     public void SimpleRpnCalculatorTestUsingArrayStack()
     {
-        _calculator.Calculate(InsertStringInLinkedListStack("1 1 1 1 1 1 1 1 1 + + + + + + + +"));
-        Assert.That(_stringWriter.ToString(), Is.EqualTo("9\r\n"));
+        _calculator.Calculate(InsertStringInLinkedListStack("1 1 1 1 1 1 1 1 1 + + + + + + + +")); 
+        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
+        Assert.That(error, Is.EqualTo("9"));
     }
     
     [Test]
     public void SimpleRpnCalculatorTestUsingLinkedListStack()
     {
-        _calculator.Calculate( InsertStringInLinkedListStack("1 2 3 * +"));
-        Assert.That(_stringWriter.ToString(), Is.EqualTo("7\r\n"));
+        _calculator.Calculate(InsertStringInLinkedListStack("1 2 3 * +")); 
+        var response = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);;
+        Assert.That(response, Is.EqualTo("7"));
     }
     
     
@@ -50,14 +54,16 @@ public class Tests
     public void AttemptToCalculateIncorrectRpnExpressionUsingArrayStack()
     {
         _calculator.Calculate(InsertStringInLinkedListStack("1 2 3 * + "));
-        Assert.That(_stringWriter.ToString(), Is.EqualTo("Specified argument was out of the range of valid values.\r\n"));
+        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
+        Assert.That(error, Is.EqualTo("Specified argument was out of the range of valid values."));
     }
     
     [Test]
     public void AttemptToCalculateIncorrectRpnExpressionUsingLinkedListStack()
     {
         _calculator.Calculate(InsertStringInLinkedListStack("1 2 3 *"));
-        Assert.That(_stringWriter.ToString(), Is.EqualTo("Incorrect postfix form\r\n"));
+        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
+        Assert.That(error, Is.EqualTo("Incorrect postfix form"));
     }
     
     private static IStack<string> InsertStringInArrayStack(string word)
