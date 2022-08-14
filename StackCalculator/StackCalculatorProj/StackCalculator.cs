@@ -5,38 +5,21 @@ namespace StackCalculatorProj;
 /// <summary>
 /// Calculator of Reverse Polish Notation type expressions
 /// </summary>
-public class StackCalculator
+public static class StackCalculator
 {
-
-    /// <summary>
-    /// Calls method "EvalRpn" for calculating RPN expression and handling exceptions from it
-    /// </summary>
-    public void Calculate(IStack<string> stack)
-    {
-        try
-        {
-            var r = EvalRpn(stack);
-            if (!stack.IsEmpty()) throw new ArgumentException("Incorrect postfix form");
-            Console.WriteLine(r);
-        } catch (DivideByZeroException e) {
-            Console.WriteLine("Attempted to divide by zero");
-        } catch (ArgumentException e) {
-            Console.WriteLine(e.Message);
-        }
-    }
-
     /// <summary>
     /// Calculating RPN expression
     /// </summary>
-    private static double EvalRpn(IStack<string> stack)
+    public static double EvalRpn(IStack<string> stack)
     {
-        var tk = stack.Pop();
-        double x, y;
-        if (double.TryParse(tk, out x))
+        var element = stack.Pop();
+        if (double.TryParse(element, out var x))
+        {
             return x;
-        y = EvalRpn(stack);
+        }
+        var y = EvalRpn(stack);
         x = EvalRpn(stack);
-        switch (tk)
+        switch (element)
         {
             case "+":
                 x += y;
@@ -53,7 +36,7 @@ public class StackCalculator
                 x /= y;
                 break;
             default:
-                throw new ArgumentException("Attempted to divide by zero");
+                throw new ArgumentException();
         }
         return x;
     }

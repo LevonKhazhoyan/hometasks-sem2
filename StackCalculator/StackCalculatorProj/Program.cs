@@ -1,16 +1,22 @@
 ﻿using StackCalculatorProj;
 using StackCalculatorProj.Stacks.Impl;
 
-Console.WriteLine("Insert Reverse Polish Notation type string to calculate");
-var s = Console.ReadLine();
 
-if (s != null)
+Console.WriteLine("Insert Reverse Polish Notation type string to calculate");
+var str = Console.ReadLine();
+
+if (str != null)
 {
-    var tks = new StackArray<string>(s.Length);
-    foreach (var el in s.Split())
+    var stack = new StackArray<string>(str.Length);
+    foreach (var element in str.Split())
     {
-        tks.Push(el);
+        stack.Push(element);
     }
-    var stackCalculator = new StackCalculator();
-    stackCalculator.Calculate(tks);
+    var result = StackCalculator.EvalRpn(stack);
+    if (!stack.IsEmpty())
+    {
+        throw new ArgumentException("Incorrect postfix form");
+    }
+    Console.WriteLine(result);
 }
+

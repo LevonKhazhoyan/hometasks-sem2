@@ -5,21 +5,26 @@
 /// </summary>
 public class StackLinkedList <T> : IStack<T>
 {
-    private Node _top;
+    private Node? _top;
     private int _size = 0;
     public int Size => _size;
 
     /// <summary>
     /// Checks if current <see cref="StackArray{T}"/> instance is empty
     /// </summary>
-    public bool IsEmpty(){
-        return _top.Element == null;
-    }
+    public bool IsEmpty()
+        => _size == 0;
+    
     
     /// <summary>
     /// Adds an element in current <see cref="StackArray{T}"/> instance
     /// </summary>
-    public void Push(T element){
+    public void Push(T element)
+    {
+        if (_top == null)
+        {
+            return;
+        }
         var node = new Node(element, _top);
         _top = node;
         _size++;
@@ -28,9 +33,10 @@ public class StackLinkedList <T> : IStack<T>
     /// <summary>
     /// Pops an element from current <see cref="StackArray{T}"/> instance
     /// </summary>
-    public T Pop(){
+    public T Pop()
+    {
         if (IsEmpty())
-            throw new ArgumentOutOfRangeException();
+            throw new InvalidOperationException();
         var temp = _top.Element;
         _top = _top.Next;
         _size--;
@@ -46,7 +52,7 @@ public class StackLinkedList <T> : IStack<T>
             Element = element;
             Next = next;
         }
-        public T Element { get; set; }
-        public Node Next { get; set; }
+        public T Element { get; }
+        public Node Next { get; }
     }
 }

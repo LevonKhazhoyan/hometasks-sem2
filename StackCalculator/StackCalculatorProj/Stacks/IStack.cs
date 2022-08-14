@@ -6,15 +6,17 @@
 public interface IStack<T>
 {
     /// <summary>
-    /// Adds an element in instance of realization <see cref="IStack{T}"/> class
+    /// Adds an element
     /// </summary>
     void Push(T element);
+    
     /// <summary>
-    /// Pops an element from instance of realization <see cref="IStack{T}"/> class
+    /// Pops an element 
     /// </summary>
     T Pop();
+    
     /// <summary>
-    /// Checks if an instance of realization <see cref="IStack{T}"/> class is empty
+    /// Checks if it's empty
     /// </summary>
     bool IsEmpty();
 }

@@ -7,7 +7,6 @@ namespace StackCalculatorUnitTests;
 
 public class Tests
 {
-    private readonly StackCalculator _calculator = new();
     private StringWriter _stringWriter = new();
     
     [SetUp]
@@ -18,52 +17,24 @@ public class Tests
     }
     
     [Test]
-    public void DivisionByZeroUsingArrayStack()
+    [TestCaseSource(nameof(CorrectDataForCalculator))]
+    public void CorrectRpnCalculations(IStack<string> testStack, double response)
     {
-        _calculator.Calculate(InsertStringInArrayStack("1 0 /"));
-        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
-        Assert.That(error, Is.EqualTo("Attempted to divide by zero"));
+        Assert.That(StackCalculator.EvalRpn(testStack), Is.EqualTo(response));
+    }
+
+    [Test]
+    [TestCaseSource(nameof(DivideByZeroStacks))]
+    public void FailedRpnCalculationsDivideByZero(IStack<string> testStack)
+    {
+        Assert.Throws<DivideByZeroException>(() => StackCalculator.EvalRpn(testStack));
     }
     
     [Test]
-    public void DivisionByZeroUsingLinkedListStack()
+    [TestCaseSource(nameof(IncorrectForm))]
+    public void FailedRpnCalculationsIncorrectForm(IStack<string> testStack)
     {
-        _calculator.Calculate( InsertStringInLinkedListStack("1 0 /"));
-        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
-        Assert.That(error, Is.EqualTo("Attempted to divide by zero"));
-    }
-    
-    [Test]
-    public void SimpleRpnCalculatorTestUsingArrayStack()
-    {
-        _calculator.Calculate(InsertStringInLinkedListStack("1 1 1 1 1 1 1 1 1 + + + + + + + +")); 
-        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
-        Assert.That(error, Is.EqualTo("9"));
-    }
-    
-    [Test]
-    public void SimpleRpnCalculatorTestUsingLinkedListStack()
-    {
-        _calculator.Calculate(InsertStringInLinkedListStack("1 2 3 * +")); 
-        var response = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);;
-        Assert.That(response, Is.EqualTo("7"));
-    }
-    
-    
-    [Test]
-    public void AttemptToCalculateIncorrectRpnExpressionUsingArrayStack()
-    {
-        _calculator.Calculate(InsertStringInLinkedListStack("1 2 3 * + "));
-        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
-        Assert.That(error, Is.EqualTo("Specified argument was out of the range of valid values."));
-    }
-    
-    [Test]
-    public void AttemptToCalculateIncorrectRpnExpressionUsingLinkedListStack()
-    {
-        _calculator.Calculate(InsertStringInLinkedListStack("1 2 3 *"));
-        var error = _stringWriter.ToString().Replace("\n", String.Empty).Replace("\r", String.Empty);
-        Assert.That(error, Is.EqualTo("Incorrect postfix form"));
+        Assert.Throws<InvalidOperationException>(() => StackCalculator.EvalRpn(testStack));
     }
     
     private static IStack<string> InsertStringInArrayStack(string word)
@@ -80,5 +51,37 @@ public class Tests
         foreach (var el in word.Split())
             tks.Push(el);
         return tks;
+    }
+    
+    public static IEnumerable<TestCaseData> CorrectDataForCalculator
+    {
+        get
+        {
+            yield return new TestCaseData(InsertStringInLinkedListStack("1 1 1 1 1 1 1 1 1 + + + + + + + +"), 9);
+            yield return new TestCaseData(InsertStringInLinkedListStack("1 1 1 1 20 1 1 1 1 + / + + + + + +"), 25.5d);
+            yield return new TestCaseData(InsertStringInArrayStack("1 2 3 * +"), 7);
+            yield return new TestCaseData(InsertStringInArrayStack("1 2 300 * +"), 601);
+        }
+    }
+    
+    public static IEnumerable<TestCaseData> DivideByZeroStacks
+    {
+        get
+        {
+            yield return new TestCaseData(InsertStringInLinkedListStack("1 0 /"));
+            yield return new TestCaseData(InsertStringInArrayStack("3 1 0 / +"));
+            yield return new TestCaseData(InsertStringInLinkedListStack("3 1 8 0 / + +"));
+            yield return new TestCaseData(InsertStringInArrayStack("1 0 /"));
+        }
+    }
+    
+    public static IEnumerable<TestCaseData> IncorrectForm
+    {
+        get
+        {
+            yield return new TestCaseData(InsertStringInLinkedListStack("1 0 + + +"));
+            yield return new TestCaseData(InsertStringInLinkedListStack("3 1 0 + * ["));
+            yield return new TestCaseData(InsertStringInArrayStack("1 2 / +"));
+        }
     }
 }
