@@ -9,22 +9,22 @@ public static class InsertionSortProj
     /// <summary>
     /// Insertion sort method
     /// </summary>
-    public static int[] InsertionSort(int[] arr)
+    public static int[] InsertionSort(int[] inputArray)
     {
-        for (var sortedLen = 0; sortedLen < arr.Length; sortedLen++)
+        for (var sortedLength = 0; sortedLength < inputArray.Length; sortedLength++)
         {
-            for (var k = 0; k < sortedLen; k++)
+            for (var k = 0; k < sortedLength; k++)
             {
-                var i = sortedLen - k;
-                if (arr[i] < arr[i - 1])
+                var i = sortedLength - k;
+                if (inputArray[i] < inputArray[i - 1])
                 {
-                    (arr[i], arr[i - 1]) = (arr[i - 1], arr[i]);
+                    (inputArray[i], inputArray[i - 1]) = (inputArray[i - 1], inputArray[i]);
                 } else
                 {
                     break;
                 }
             }
         }
-        return arr;
+        return inputArray;
     }
 }

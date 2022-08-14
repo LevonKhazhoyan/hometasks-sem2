@@ -15,39 +15,25 @@ public class InsertionSortTests
     }
 
     [Test]
-    public void PositiveNumbersSort()
+    [TestCase(new [] { 6, 2, 9, 20, 130 }, TestName="PositiveNumbersSort" )]
+    [TestCase(new [] { -2, 5, 0, -16, 100 }, TestName="NegativeAndPositiveNumbersSort" )]
+    [TestCase(new [] { -2, -5, -3, -16, -100 }, TestName="JustNegativeNumbersSort" )]
+    [TestCase(new int[] {}, TestName="EmptyArraySort" )]
+    public void Sort(int[] bunchOfNumbers)
     {
-        CompareInsertionSortWithSystemSort(new [] { 6, 2, 9, 20, 130 });
-    }
-    
-    [Test]
-    public void NegativeAndPositiveNumbersSort()
-    {
-        CompareInsertionSortWithSystemSort(new [] { -2, 5, 0, -16, 100 });
+        CompareInsertionSortWithSystemSort(bunchOfNumbers);
     }
 
-    [Test]
-    public void JustNegativeNumbersSort()
+    private static void CompareInsertionSortWithSystemSort(int[] inputArray)
     {
-        CompareInsertionSortWithSystemSort(new [] { -2, -5, -3, -16, -100 });
-    }
-
-    [Test]
-    public void EmptyListSort()
-    {
-        CompareInsertionSortWithSystemSort(Array.Empty<int>());
-    }
-
-    private void CompareInsertionSortWithSystemSort(int[] arr)
-    {
-        var expectedArr = arr.ToArray();
-        Array.Sort(expectedArr);
-        CollectionAssert.AreEqual(expectedArr, InsertionSortProj.InsertionSort(arr));
+        var expectedArray = inputArray.ToArray();
+        Array.Sort(expectedArray);
+        CollectionAssert.AreEqual(expectedArray, InsertionSortProj.InsertionSort(inputArray));
     }
 
     private int[] CreateIntArr()
     {
-        var numbers = Enumerable.Range(1, _rnd.Next(1,400)).OrderBy(_ => _rnd.Next()).ToArray();
+        var numbers = Enumerable.Range(1, _rnd.Next(1, 400)).OrderBy(_ => _rnd.Next()).ToArray();
         return numbers;
     }
 }

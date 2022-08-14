@@ -6,26 +6,17 @@ try
     var input = Console.ReadLine();
     if (input != null)
     {
-        var result = InsertionSortProj.InsertionSort(ConsoleArrayRead(input.Split(' ')));
+        var result = InsertionSortProj.InsertionSort(
+            input.Split(' ').Select(n => Convert.ToInt32(n)).ToArray());
         Console.WriteLine("There is your sorted array");
         Console.WriteLine($"[{string.Join(", ", result)}]");
     }
 }
-catch (FormatException e)
+catch (FormatException)
 {
     Console.WriteLine("Failed! Example of input: -1 0 1 2");
 }
-catch (ArgumentException e)
+catch (ArgumentException)
 {
     Console.WriteLine("Expected array of integers");
-}
-
-static int[] ConsoleArrayRead(string[] numbers)
-{
-    var arr = new int[numbers.Length];
-    for (var i = 0; i < numbers.Length; i++)
-    {
-        arr[i] = int.Parse(numbers[i]);
-    }
-    return arr;
 }
