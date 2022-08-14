@@ -5,7 +5,7 @@ namespace UnitTrieTests;
 
 public class UnitTests
 {
-    private readonly Trie _trie = new Trie();
+    private readonly Trie _trie = new();
     
     [SetUp]
     public void Setup()
@@ -13,7 +13,6 @@ public class UnitTests
         _trie.Add("test");
     }
 
-    
     [Test]
     public void ContainsTest()
     {

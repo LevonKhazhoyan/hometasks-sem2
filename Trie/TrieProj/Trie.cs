@@ -6,7 +6,7 @@
 /// </summary>
 public class Trie
 {
-    private TrieNode Root { get; }
+    public TrieNode Root { get; }
 
     /// <summary>
     /// Constructor of <see cref="Trie"/> class instance 
@@ -26,7 +26,9 @@ public class Trie
         foreach (var ch in word.ToCharArray())
         {
             if (current.Children.ContainsKey(ch))
+            {
                 current = current.Children[ch];
+            }
             else
             {
                 current.Children.TryAdd(ch, new TrieNode());
@@ -68,13 +70,16 @@ public class Trie
     /// </summary>
     private static bool Remove(TrieNode current, string word, int index)
     {
-        if (index == word.Length) {
-            if (!current.IsWord) {
+        if (index == word.Length)
+        {
+            if (!current.IsWord) 
+            {
                 return false;
             }
             current.IsWord = false;
             return current.Children.Count == 0;
         }
+        
         var ch = word[index];
         if (!current.Children.ContainsKey(ch))
         {
@@ -86,9 +91,9 @@ public class Trie
         if (!shouldDeleteCurrentNode) {
             return false;
         }
+        
         current.Children.Remove(ch);
         return current.Children.Count == 0;
-
     }
 
     /// <summary>
@@ -101,7 +106,9 @@ public class Trie
         foreach (var ch in prefix.ToCharArray())
         {
             if (!current.Children.ContainsKey(ch))
+            {
                 return 0;
+            }
             var node = current.Children[ch];
             current = node;
         }
@@ -115,12 +122,14 @@ public class Trie
         {
             foreach (var ch in current.Children.Values)
             {
-                if (ch.IsWord) { chars.Add(ch); }
+                if (ch.IsWord)
+                {
+                    chars.Add(ch);
+                }
                 current = ch;
                 Go(current);
             }
         }
-
         return count + chars.Count;
     }
 
@@ -141,11 +150,10 @@ public class Trie
             IsWord = false;
         }
 
-        
         /// <summary>
-        /// Constructor of <see cref="TrieNode(Dictionary{char, TrieNode}, string, bool)"/> class instance 
+        /// Constructor of <see cref="TrieNode"/> class instance 
         /// </summary>
-        public TrieNode(Dictionary<char, TrieNode> children, string content, bool isWord)
+        public TrieNode(Dictionary<char, TrieNode> children, bool isWord)
         {
             Children = children;
             IsWord = isWord;
