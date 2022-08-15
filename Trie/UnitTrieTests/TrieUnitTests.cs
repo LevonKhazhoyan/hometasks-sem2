@@ -14,6 +14,16 @@ public class UnitTests
     }
 
     [Test]
+    public void HowManyStartsWithPrefixTest()
+    {
+        Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(0));
+        _trie.Add("lest2");
+        Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(1));
+        _trie.Add("dest2");
+        Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(1));
+    }
+    
+    [Test]
     public void ContainsTest()
     {
         Assert.True(_trie.Contains("test"));
@@ -36,13 +46,4 @@ public class UnitTests
         Assert.False(_trie.Contains("test"));
     }
     
-    [Test]
-    public void HowManyStartsWithPrefixTest()
-    {
-        Assert.That(_trie.HowManyStartsWithPrefix("t"), Is.EqualTo(1));
-        _trie.Add("test2");
-        Assert.That(_trie.HowManyStartsWithPrefix("t"), Is.EqualTo(2));
-        _trie.Add("dest2");
-        Assert.That(_trie.HowManyStartsWithPrefix("t"), Is.EqualTo(2));
-    }
 }

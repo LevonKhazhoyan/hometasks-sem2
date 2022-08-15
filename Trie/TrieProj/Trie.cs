@@ -6,7 +6,7 @@
 /// </summary>
 public class Trie
 {
-    public TrieNode Root { get; }
+    private TrieNode Root { get; }
 
     /// <summary>
     /// Constructor of <see cref="Trie"/> class instance 
@@ -34,6 +34,7 @@ public class Trie
                 current.Children.TryAdd(ch, new TrieNode());
                 current = current.Children[ch]; 
             }
+            current.PrefixCount += 1;
         }
 
         current.IsWord = true;
@@ -62,7 +63,18 @@ public class Trie
     /// </summary>
     public void Remove(string word)
     {
-        Remove(Root, word, 0);
+        if (!Remove(Root, word, 0))
+        {
+            return;
+        }
+
+        var current = Root;
+        foreach (var ch in word.ToCharArray())
+        {
+            current.PrefixCount--;
+            var node = current.Children[ch];
+            current = node;
+        }
     }
 
     /// <summary>
@@ -113,24 +125,7 @@ public class Trie
             current = node;
         }
         
-        var count = current.IsWord ? 1 : 0;
-        var chars = new HashSet<TrieNode>();
-        
-        Go(current);
-        
-        void Go(TrieNode node)
-        {
-            foreach (var ch in current.Children.Values)
-            {
-                if (ch.IsWord)
-                {
-                    chars.Add(ch);
-                }
-                current = ch;
-                Go(current);
-            }
-        }
-        return count + chars.Count;
+        return current.PrefixCount;
     }
 
     /// <summary>
@@ -140,6 +135,7 @@ public class Trie
     {
         public Dictionary<char, TrieNode> Children { get; }
         public bool IsWord { get; set; }
+        public int PrefixCount { get; set; }
 
         /// <summary>
         /// Constructor of <see cref="TrieNode"/> class instance 
