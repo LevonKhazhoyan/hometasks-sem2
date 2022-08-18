@@ -1,27 +1,28 @@
 ﻿namespace BWT;
+
 /// <summary>
 /// Burrows Wheeler Transformation implementation and inversion of it
 /// </summary>
-public class BwtProj
+public static class Bwt
 {
-    private const int R = 256;
+    private const int charAmount = 256;
     
     /// <summary>
     /// BWT based on building <see cref="SuffixArray"/> 
     /// </summary>
-    public static Tuple<char[], int> BwTransformation(String txt)
+    public static Tuple<char[], int> BwTransformation(String inputString)
     {
-        var n = txt.Length;
-        var suffixArr = new SuffixArray(txt).SufArray;
-        var bwt = new char[n];
-        for (var i = 0; i < n; i++)
+        var inputLength = inputString.Length;
+        var inputSuffix = new SuffixArray(inputString).sufArray;
+        var bwt = new char[inputLength];
+        for (var i = 0; i < inputLength; i++)
         {
-            var j = suffixArr[i] - 1;
+            var j = inputSuffix[i] - 1;
             if (j < 0)
-                j += n;
-            bwt[i] = txt[j];
+                j += inputLength;
+            bwt[i] = inputString[j];
         }
-        return new Tuple<char[], int>(bwt, Array.IndexOf(suffixArr, 0));
+        return new Tuple<char[], int>(bwt, Array.IndexOf(inputSuffix, 0));
     }
     
     /// <summary>
@@ -29,14 +30,15 @@ public class BwtProj
     /// </summary>
     public static char[] InverseTransform(Tuple<char[], int> bwt)
     {
+        
         var bwtStr = bwt.Item1;
         var first = bwt.Item2;
         var next = new int[bwtStr.Length];
-        var count = new int[R + 1];
+        var count = new int[charAmount + 1];
         var sortedBwt = new char[bwtStr.Length];
         foreach (var el in bwtStr)
             count[el + 1]++;
-        for (var i = 0; i < R; i++)
+        for (var i = 0; i < charAmount; i++)
             count[i + 1] += count[i];
         for (var i = 0; i < bwtStr.Length; i++) {
             var posI = count[bwtStr[i]]++;

@@ -5,22 +5,22 @@ switch (Console.ReadLine())
 {
     case "BWT":
     {
-        Console.WriteLine("Input string with '$' symbol at the end");
+        Console.WriteLine("Input string");
         try
         {
-            var bwt = Console.ReadLine();
-            if (bwt != null)
+            var input = Console.ReadLine();
+            if (input != null)
             {
-                var result = BwtProj.BwTransformation(bwt);
+                var result = Bwt.BwTransformation(input);
                 Console.WriteLine(new string(result.Item1));
                 Console.WriteLine(result.Item2);
             }
         }
-        catch (FormatException ex)
+        catch (FormatException)
         {
-            Console.WriteLine("Failed! Example of input: banana$");
+            Console.WriteLine("Failed! Example of input: banana");
         }
-        catch (ArgumentException ex)
+        catch (ArgumentException)
         {
             Console.WriteLine("Expected String");
         }
@@ -29,12 +29,12 @@ switch (Console.ReadLine())
     case "Inverse":
     {
         Console.WriteLine("Input BWT string");
-        var bwt = Console.ReadLine()?.ToCharArray();
+        var input = Console.ReadLine()?.ToCharArray();
         Console.WriteLine("Input index in sorted shift array of BWT string");
         var num = Console.ReadLine();
-        if (bwt != null && num != null)
+        if (input != null && num != null)
         {
-            Console.WriteLine(new string(BwtProj.InverseTransform(new Tuple<char[], int>(bwt, Int32.Parse(num)))));
+            Console.WriteLine(new string(Bwt.InverseTransform(new Tuple<char[], int>(input, Int32.Parse(num)))));
         }
         break;
     }

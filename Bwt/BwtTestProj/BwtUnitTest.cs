@@ -6,12 +6,12 @@ public class BwtUnitTest
     [Test]
     public void TransformAndInverse()
     {
-        Assert.That(new string(BwtProj.InverseTransform(BwtProj.BwTransformation(new string("banana$")))), Is.EqualTo("banana$"));
+        Assert.That(new string(Bwt.InverseTransform(Bwt.BwTransformation(new string("banana")))), Is.EqualTo("banana"));
     }
     
     [Test]
     public void SimpleBwtTest()
     {
-        Assert.That(BwtProj.BwTransformation("banana$"), Is.EqualTo(new Tuple<char[], int>("annb$aa".ToCharArray(), 4)));
+        Assert.That(Bwt.BwTransformation("banana^"), Is.EqualTo(new Tuple<char[], int>("annb^aa".ToCharArray(), 4)));
     }
 }

@@ -4,8 +4,8 @@
 /// </summary>
 public class SuffixArray
 {
-    public readonly int[] SufArray;
-    private readonly Suffix StartString; 
+    public readonly int[] sufArray;
+    private readonly Suffix startString; 
 
     /// <summary>
     /// Constructor of <see cref="SuffixArray"/>
@@ -18,11 +18,11 @@ public class SuffixArray
         
         for (var i = 0; i < n; i++)
         {
-            suffix[i] = new Suffix(i, s[i] - '$', 0);
+            suffix[i] = new Suffix(i, s[i] - s[n-1], 0);
         }
 
         for (var i = 0; i < n; i++)
-            suffix[i].Next = i + 1 < n ? suffix[i + 1].Rank : -1;
+            suffix[i].next = i + 1 < n ? suffix[i + 1].rank : -1;
 
         Array.Sort(suffix);
         var index = new int[n];
@@ -30,67 +30,66 @@ public class SuffixArray
         for (var length = 4; length < 2 * n; length <<= 1)
         {
             var rank = 0;
-            var prev = suffix[0].Rank;
-            suffix[0].Rank = rank;
-            index[suffix[0].Index] = 0;
+            var prev = suffix[0].rank;
+            suffix[0].rank = rank;
+            index[suffix[0].index] = 0;
             for (var i = 1; i < n; i++)
             {
-                if (suffix[i].Rank == prev && suffix[i].Next == suffix[i - 1].Next)
+                if (suffix[i].rank == prev && suffix[i].next == suffix[i - 1].next)
                 {
-                    prev = suffix[i].Rank;
-                    suffix[i].Rank = rank;
+                    prev = suffix[i].rank;
+                    suffix[i].rank = rank;
                 }
                 else
                 {
-                    prev = suffix[i].Rank;
-                    suffix[i].Rank = ++rank;
+                    prev = suffix[i].rank;
+                    suffix[i].rank = ++rank;
                 }
 
-                index[suffix[i].Index] = i;
+                index[suffix[i].index] = i;
             }
 
             for (int i = 0; i < n; i++)
             {
-                var nextP = suffix[i].Index + length / 2;
-                suffix[i].Next = nextP < n ? suffix[index[nextP]].Rank : -1;
+                var nextP = suffix[i].index + length / 2;
+                suffix[i].next = nextP < n ? suffix[index[nextP]].rank : -1;
             }
 
             Array.Sort(suffix);
         }
 
-        StartString = suffix[0];
-        SufArray = new int[n];
+        startString = suffix[0];
+        sufArray = new int[n];
 
         for (var i = 0; i < n; i++)
-            SufArray[i] = suffix[i].Index;
+            sufArray[i] = suffix[i].index;
     }
 
     /// <summary>
     /// Suffix class for <see cref="SuffixArray"/> realization
     /// </summary>
-    public class Suffix : IComparable<Suffix>
+    class Suffix : IComparable<Suffix>
     {
-        public readonly int Index;
-        public int Rank;
-        public int Next;
+        public readonly int index;
+        public int rank;
+        public int next;
 
         /// <summary>
         /// Constructor of <see cref="Suffix(int, int, int)"/> class instance
         /// </summary>
         public Suffix(int index, int rank, int next)
         {
-            Index = index;
-            Rank = rank;
-            Next = next;
+            this.index = index;
+            this.rank = rank;
+            this.next = next;
         }
 
         /// <summary>
         /// Compare method for <see cref="T:IComparable(Suffix)"/> realization
         /// </summary>
-        public int CompareTo(Suffix that)
+        public int CompareTo(Suffix? that)
         {
-            if (Rank != that.Rank) return Rank.CompareTo(that.Rank);
-            return Next.CompareTo(that.Next);
+            return rank != that?.rank ? rank.CompareTo(that?.rank) : rank.CompareTo(that.next);
         }
     }
 }
