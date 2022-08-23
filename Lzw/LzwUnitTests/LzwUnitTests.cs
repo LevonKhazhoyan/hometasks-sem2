@@ -5,10 +5,10 @@ using NUnit.Framework;
 
 public class LzwTests
 {   
-    private const string pathTxt1 = "..\\..\\..\\test1.txt";
-    private const string pathTxt2 = "..\\..\\..\\expectedTest1.txt"; 
-    private const string pathExe1 = "..\\..\\..\\MyGamesLoader.exe";
-    private const string pathExe2 = "..\\..\\..\\test.exe";
+    private const string pathTxt1 = "test1.txt";
+    private const string pathTxt2 = "expectedTest1.txt"; 
+    private const string pathExe1 = "MyGamesLoader.exe";
+    private const string pathExe2 = "test.exe";
     
     private static bool FilesAreEqual(string path1, string path2)
     {
