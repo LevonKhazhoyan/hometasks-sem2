@@ -1,5 +1,8 @@
 ﻿namespace Lzw;
 
+/// <summary>
+/// Class for Lzw methods
+/// </summary>
 public static class LzwMethods
 {
     /// <summary>
@@ -17,15 +20,15 @@ public static class LzwMethods
             var valueByte = (byte) fileRead.ReadByte();
             if (charIndex == fileRead.Length - 1)
             {
-                trie.SaveTrieElement(valueByte, fileWrite);
+                TrieForLzwUtils.SaveTrieElement(trie, valueByte, fileWrite);
             }
             else if (trie.TryAdd(valueByte))
             {
-                trie.SaveTrieElement(valueByte, fileWrite);
+                TrieForLzwUtils.SaveTrieElement(trie, valueByte, fileWrite);
                 trie.ResetCursor();
             }
         }
-        trie.SaveTrieCount(fileWrite);      
+        TrieForLzwUtils.SaveTrieCount(trie, fileWrite);      
     }
 
     /// <summary>
@@ -38,23 +41,23 @@ public static class LzwMethods
         using var fileWrite = File.OpenWrite(path.Remove(path.Length - 7));
         fileRead.Seek(-4, SeekOrigin.End);
         var sizeByte = new []{
-            (byte) fileRead.ReadByte(),
-            (byte) fileRead.ReadByte(),
-            (byte) fileRead.ReadByte(),
-            (byte) fileRead.ReadByte()};
+            (byte)fileRead.ReadByte(),
+            (byte)fileRead.ReadByte(),
+            (byte)fileRead.ReadByte(),
+            (byte)fileRead.ReadByte()};
         fileRead.Seek(0, SeekOrigin.Begin);
         var dictionary = new byte[BitConverter.ToInt32(sizeByte)][];
 
         for (var i = 0; i < dictionary.GetLength(0); i++)
         {
-            var bytesLength = (int) Math.Ceiling(Math.Log2(i + 2) / 8);
+            var bytesLength = (int)Math.Ceiling(Math.Log2(i + 2) / 8);
             var byteValues = new byte[4];
             for (var j = 0; j < 4; j++)
             {
-                byteValues[j] = j < bytesLength ? (byte) fileRead.ReadByte() : (byte)0;
+                byteValues[j] = j < bytesLength ? (byte)fileRead.ReadByte() : (byte)0;
             }
             var value = BitConverter.ToInt32(byteValues);
-            var character = (byte) fileRead.ReadByte();
+            var character = (byte)fileRead.ReadByte();
             if (value == 0)
             {
                 dictionary[i] = new []{character};

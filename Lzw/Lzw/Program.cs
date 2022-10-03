@@ -1,50 +1,55 @@
 ﻿using Lzw;
 
-Console.WriteLine("Insert \"-c file path\" to compress\n\"-d file path\" to decompress");
-Console.WriteLine($"File path can be global or leads in: {AppDomain.CurrentDomain.BaseDirectory}");
-var input = Console.ReadLine()?.Split(" ");
 try
 {
-    if (input?.Length == 2)
+    if (args?.Length == 2)
     {
-        switch (input[0])
+        switch (args[0])
         {
             case "-c":
             {
-                if (File.Exists(input[1] + ".zipped"))
+                if (File.Exists(args[1] + ".zipped"))
                 {
-                    Console.WriteLine(input[1] + ".zipped file already exists. Would you like to delete existing file?\ny/n");
+                    Console.WriteLine(args[1] + ".zipped file already exists. Would you like to delete existing file?\ny/n");
                     if (Console.ReadLine() == "y")
                     {
-                        File.Delete(input[1] + ".zipped");
+                        File.Delete(args[1] + ".zipped");
                     }
                     else
                     {
                         break;
                     }                    
                 }
-                LzwMethods.Compress(input[1]);
-                var coefficient = (double)new FileInfo(input[1]).Length / new FileInfo(input[1] + ".zipped").Length;
+                else
+                {
+                    Console.WriteLine($"File path can be global or leads in: {AppDomain.CurrentDomain.BaseDirectory}");
+                }
+                LzwMethods.Compress(args[1]);
+                var coefficient = (double)new FileInfo(args[1]).Length / new FileInfo(args[1] + ".zipped").Length;
                 Console.WriteLine($"Compression coefficient: {Math.Round(coefficient, 5)}");
                 break;
             }
             case "-d":
             {
-                if (input[1].Length > 7 && input[1][(input[1].Length - 7)..] == ".zipped")
+                if (args[1].Length > 7 && args[1][(args[1].Length - 7)..] == ".zipped")
                 {
-                    if (File.Exists(input[1][..(input[1].Length - 7)]))
+                    if (File.Exists(args[1][..(args[1].Length - 7)]))
                     {
-                        Console.WriteLine(input[1] + ".zipped file already exists. Would you like to delete existing file?\ny/n");
+                        Console.WriteLine(args[1] + ".unzipped file already exists. Would you like to delete existing file?\ny/n");
                         if (Console.ReadLine() == "y")
                         {
-                            File.Delete(input[1][..(input[1].Length - 7)]);
+                            File.Delete(args[1][..(args[1].Length - 7)]);
                         }
                         else
                         {
                             break;
                         }
                     }
-                    LzwMethods.Decompress(input[1]);
+                    else
+                    {
+                        Console.WriteLine($"File path can be global or leads in: {AppDomain.CurrentDomain.BaseDirectory}");
+                    }
+                    LzwMethods.Decompress(args[1]);
                     Console.WriteLine("File successfully decompressed");
                     return;
                 }
@@ -66,5 +71,5 @@ try
 }
 catch (FileNotFoundException)
 {
-    Console.WriteLine($"There is no such file path as: \"{input?[1]}\"");
+    Console.WriteLine($"There is no such file path as: \"{args?[1]}\"");
 }

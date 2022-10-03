@@ -1,11 +1,25 @@
 ﻿namespace Lzw;
 
+/// <summary>
+/// Trie class for Lzw methods
+/// </summary>
 public class TrieForLzw
 {
     private int prefixCount;
+    public int PrefixCount
+    {
+        get => prefixCount;
+        set => prefixCount = value;
+    }
     private readonly TrieElement head;
     private TrieElement pointer;
-    
+    public TrieElement Pointer
+    {
+        get => pointer;
+        set => pointer = value ?? throw new ArgumentNullException(nameof(value));
+    }
+
+
     /// <summary>
     /// Initializes a new instance of the <see cref="TrieForLzw"/> class
     /// </summary>
@@ -15,31 +29,13 @@ public class TrieForLzw
         head = new TrieElement();
         pointer = head;
     }
-    
-    /// <summary>
-    /// Saves node in file
-    /// </summary>
-    public void SaveTrieElement(byte value, FileStream file)
-    {
-        var writeValue = pointer.HasParent() ? pointer.Value : 0;
-        var bytes = BitConverter.GetBytes(writeValue);
-        Array.Resize(ref bytes, (int) Math.Ceiling(Math.Log2(prefixCount) / 8));
-        file.Write(bytes);
-        file.WriteByte(value);
-    }
-
-    /// <summary>
-    /// Saves node count
-    /// </summary>
-    public void SaveTrieCount(FileStream file)
-        => file.Write(BitConverter.GetBytes(prefixCount));
 
     /// <summary>
     /// Sets the pointer back to the head
     /// </summary>
     public void ResetCursor()
         => pointer = head;
-    
+
     /// <summary>
     /// Adds child if current <see cref="TrieElement"/> doesn't have one
     /// </summary>
@@ -54,13 +50,18 @@ public class TrieForLzw
         prefixCount++;
         return true;
     }
-    
+
     /// <summary>
     /// Element of trie containing code and dictionary of children
     /// </summary>
-    private class TrieElement
+    public class TrieElement
     {
-        public int Value { get; set; }
+        private int value;
+        public int Value
+        {
+            get => value;
+            set => this.value = value;
+        }
         private TrieElement? parent;
         private readonly Dictionary<byte, TrieElement> children;
 
@@ -78,7 +79,7 @@ public class TrieForLzw
             var newChild = new TrieElement
             {
                 parent = this,
-                Value = value
+                value = value
             };
             children.Add(keyByte, newChild);
         }
