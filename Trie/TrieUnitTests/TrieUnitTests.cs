@@ -5,11 +5,12 @@ namespace UnitTrieTests;
 
 public class UnitTests
 {
-    private readonly Trie _trie = new();
+    private Trie _trie;
     
     [SetUp]
     public void Setup()
     {
+        _trie = new Trie();
         _trie.Add("test");
     }
 
@@ -17,10 +18,11 @@ public class UnitTests
     public void HowManyStartsWithPrefixTest()
     {
         Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(0));
-        _trie.Add("lest2");
+        _trie.Add("led");
         Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(1));
-        _trie.Add("dest2");
-        Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(1));
+        _trie.Add("lid");
+        Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(2));
+        Assert.That(_trie.HowManyStartsWithPrefix("li"), Is.EqualTo(1));
     }
     
     [Test]
@@ -44,6 +46,6 @@ public class UnitTests
         Assert.True(_trie.Contains("test"));
         _trie.Remove("test");
         Assert.False(_trie.Contains("test"));
+        Assert.False(_trie.Contains("t"));
     }
-    
 }

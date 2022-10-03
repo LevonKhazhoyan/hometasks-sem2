@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrieProj", "TrieProj\TrieProj.csproj", "{78AB67BB-F09F-4C10-941E-48E12C737718}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTrieTests", "UnitTrieTests\UnitTrieTests.csproj", "{C2C135B6-B6EF-444E-95E0-BD629A920A27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrieUnitTests", "TrieUnitTests\TrieUnitTests.csproj", "{C2C135B6-B6EF-444E-95E0-BD629A920A27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,7 +6,7 @@
 /// </summary>
 public class Trie
 {
-    private TrieNode Root { get; }
+    private readonly TrieNode Root;
 
     /// <summary>
     /// Constructor of <see cref="Trie"/> class instance 
@@ -72,6 +72,10 @@ public class Trie
         foreach (var ch in word.ToCharArray())
         {
             current.PrefixCount--;
+            if (!current.Children.ContainsKey(ch))
+            {
+                return;
+            }
             var node = current.Children[ch];
             current = node;
         }
@@ -93,6 +97,7 @@ public class Trie
         }
         
         var ch = word[index];
+        
         if (!current.Children.ContainsKey(ch))
         {
             return false;
@@ -100,7 +105,8 @@ public class Trie
         
         var node = current.Children[ch];
         var shouldDeleteCurrentNode = Remove(node, word, index + 1) && !node.IsWord;
-        if (!shouldDeleteCurrentNode) {
+        if (!shouldDeleteCurrentNode) 
+        {
             return false;
         }
         
@@ -131,11 +137,27 @@ public class Trie
     /// <summary>
     /// Node just like in tree class
     /// </summary>
-    public class TrieNode
+    private class TrieNode
     {
-        public Dictionary<char, TrieNode> Children { get; }
-        public bool IsWord { get; set; }
-        public int PrefixCount { get; set; }
+        private Dictionary<char, TrieNode> children;
+        public Dictionary<char, TrieNode> Children
+        {
+            get => children;
+            set => children = value ?? throw new ArgumentNullException(nameof(value));
+        }
+        private bool isWord;
+        public bool IsWord
+        {
+            get => isWord;
+            set => isWord = value;
+        }
+
+        private int prefixCount;
+        public int PrefixCount
+        {
+            get => prefixCount;
+            set => prefixCount = value;
+        }
 
         /// <summary>
         /// Constructor of <see cref="TrieNode"/> class instance 
