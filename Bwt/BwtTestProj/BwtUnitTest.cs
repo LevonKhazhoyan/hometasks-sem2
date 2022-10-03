@@ -12,6 +12,6 @@ public class BwtUnitTest
     [Test]
     public void SimpleBwtTest()
     {
-        Assert.That(Bwt.BwTransformation("banana^"), Is.EqualTo(new Tuple<char[], int>("annb^aa".ToCharArray(), 4)));
+        Assert.That(Bwt.BwTransformation("banana^"), Is.EqualTo(("annb^aa".ToCharArray(), 4)));
     }
 }

@@ -10,10 +10,10 @@ public static class Bwt
     /// <summary>
     /// BWT based on building <see cref="SuffixArray"/> 
     /// </summary>
-    public static Tuple<char[], int> BwTransformation(String inputString)
+    public static (char[], int) BwTransformation(String inputString)
     {
         var inputLength = inputString.Length;
-        var inputSuffix = new SuffixArray(inputString).sufArray;
+        var inputSuffix = new SuffixArray(inputString).SufArray;
         var bwt = new char[inputLength];
         for (var i = 0; i < inputLength; i++)
         {
@@ -22,35 +22,34 @@ public static class Bwt
                 j += inputLength;
             bwt[i] = inputString[j];
         }
-        return new Tuple<char[], int>(bwt, Array.IndexOf(inputSuffix, 0));
+        return (bwt, Array.IndexOf(inputSuffix, 0));
     }
     
     /// <summary>
     /// Inversion of <see cref="BwTransformation(String)"/> to <see cref="T:char[]"/>
     /// </summary>
-    public static char[] InverseTransform(Tuple<char[], int> bwt)
+    public static char[] InverseTransform((char[], int) bwt)
     {
         
-        var bwtStr = bwt.Item1;
-        var first = bwt.Item2;
-        var next = new int[bwtStr.Length];
+        var (stringInBwtFormat, first) = bwt;
+        var next = new int[stringInBwtFormat.Length];
         var count = new int[charAmount + 1];
-        var sortedBwt = new char[bwtStr.Length];
-        foreach (var el in bwtStr)
+        var sortedBwt = new char[stringInBwtFormat.Length];
+        foreach (var el in stringInBwtFormat)
             count[el + 1]++;
         for (var i = 0; i < charAmount; i++)
             count[i + 1] += count[i];
-        for (var i = 0; i < bwtStr.Length; i++) {
-            var posI = count[bwtStr[i]]++;
-            sortedBwt[posI] = bwtStr[i];
+        for (var i = 0; i < stringInBwtFormat.Length; i++) {
+            var posI = count[stringInBwtFormat[i]]++;
+            sortedBwt[posI] = stringInBwtFormat[i];
             next[posI] = i;
         }
-        var res = new char[bwtStr.Length];
-        for (var i = 0; i < bwtStr.Length; i++)
+        var result = new char[stringInBwtFormat.Length];
+        for (var i = 0; i < stringInBwtFormat.Length; i++)
         {
-            res[i] = sortedBwt[first];
+            result[i] = sortedBwt[first];
             first = next[first];
         }
-        return res;
+        return result;
     }
 }

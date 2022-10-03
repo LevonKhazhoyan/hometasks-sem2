@@ -1,24 +1,25 @@
 ﻿namespace BWT;
+
 /// <summary>
 /// Suffix Array class
 /// </summary>
 public class SuffixArray
 {
-    public readonly int[] sufArray;
+    private int[] suffixArray;
+    public int[] SufArray => suffixArray;
     private readonly Suffix startString; 
 
     /// <summary>
     /// Constructor of <see cref="SuffixArray"/>
     /// </summary>
-    public SuffixArray(String s)
+    public SuffixArray(String str)
     {
-
-        var n = s.Length;
+        var n = str.Length;
         var suffix = new Suffix[n];
         
         for (var i = 0; i < n; i++)
         {
-            suffix[i] = new Suffix(i, s[i] - s[n-1], 0);
+            suffix[i] = new Suffix(i, str[i] - str[n-1], 0);
         }
 
         for (var i = 0; i < n; i++)
@@ -49,7 +50,7 @@ public class SuffixArray
                 index[suffix[i].index] = i;
             }
 
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 var nextP = suffix[i].index + length / 2;
                 suffix[i].next = nextP < n ? suffix[index[nextP]].rank : -1;
@@ -59,16 +60,16 @@ public class SuffixArray
         }
 
         startString = suffix[0];
-        sufArray = new int[n];
+        suffixArray = new int[n];
 
         for (var i = 0; i < n; i++)
-            sufArray[i] = suffix[i].index;
+            suffixArray[i] = suffix[i].index;
     }
 
     /// <summary>
     /// Suffix class for <see cref="SuffixArray"/> realization
     /// </summary>
-    class Suffix : IComparable<Suffix>
+    private class Suffix : IComparable<Suffix>
     {
         public readonly int index;
         public int rank;

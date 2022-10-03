@@ -34,7 +34,7 @@ switch (Console.ReadLine())
         var num = Console.ReadLine();
         if (input != null && num != null)
         {
-            Console.WriteLine(new string(Bwt.InverseTransform(new Tuple<char[], int>(input, Int32.Parse(num)))));
+            Console.WriteLine(new string(Bwt.InverseTransform((input, Int32.Parse(num)))));
         }
         break;
     }
