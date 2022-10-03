@@ -6,34 +6,27 @@ namespace InsertionSortTestProj;
 [TestFixture]
 public class InsertionSortTests
 {
-    private readonly Random _rnd = new();
-    
-    [Test]
-    public void RandomArraySort()
-    {
-        CompareInsertionSortWithSystemSort(CreateIntArr());
-    }
-
-    [Test]
-    [TestCase(new [] { 6, 2, 9, 20, 130 }, TestName="PositiveNumbersSort" )]
-    [TestCase(new [] { -2, 5, 0, -16, 100 }, TestName="NegativeAndPositiveNumbersSort" )]
-    [TestCase(new [] { -2, -5, -3, -16, -100 }, TestName="JustNegativeNumbersSort" )]
-    [TestCase(new int[] {}, TestName="EmptyArraySort" )]
+    [TestCaseSource(nameof(SortTestCases))]
     public void Sort(int[] bunchOfNumbers)
     {
-        CompareInsertionSortWithSystemSort(bunchOfNumbers);
-    }
-
-    private static void CompareInsertionSortWithSystemSort(int[] inputArray)
-    {
-        var expectedArray = inputArray.ToArray();
+        var expectedArray = bunchOfNumbers.ToArray();
         Array.Sort(expectedArray);
-        CollectionAssert.AreEqual(expectedArray, InsertionSortProj.InsertionSort(inputArray));
+        CollectionAssert.AreEqual(expectedArray, InsertionSortProj.InsertionSort(bunchOfNumbers));
     }
 
-    private int[] CreateIntArr()
+    private static int[] CreateIntArray()
     {
-        var numbers = Enumerable.Range(1, _rnd.Next(1, 400)).OrderBy(_ => _rnd.Next()).ToArray();
+        var random = new Random();
+        var numbers = Enumerable.Range(1, random.Next(1, 400)).OrderBy(_ => random.Next()).ToArray();
         return numbers;
+    }
+    
+    private static IEnumerable<int[]> SortTestCases()
+    {
+        yield return new [] { 6, 2, 9, 20, 130 };
+        yield return new [] { -2, 5, 0, -16, 100 };
+        yield return new [] { -2, -5, -3, -16, -100 };
+        yield return Array.Empty<int>();
+        yield return CreateIntArray();
     }
 }

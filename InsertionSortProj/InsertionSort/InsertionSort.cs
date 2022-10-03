@@ -19,7 +19,8 @@ public static class InsertionSortProj
                 if (inputArray[i] < inputArray[i - 1])
                 {
                     (inputArray[i], inputArray[i - 1]) = (inputArray[i - 1], inputArray[i]);
-                } else
+                } 
+                else
                 {
                     break;
                 }
