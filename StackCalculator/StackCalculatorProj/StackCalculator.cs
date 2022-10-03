@@ -1,6 +1,6 @@
-﻿using StackCalculatorProj.Stacks;
+﻿namespace StackCalculatorProj;
 
-namespace StackCalculatorProj;
+using Stacks;
 
 /// <summary>
 /// Calculator of Reverse Polish Notation type expressions
@@ -10,34 +10,52 @@ public static class StackCalculator
     /// <summary>
     /// Calculating RPN expression
     /// </summary>
-    public static double EvalRpn(IStack<string> stack)
+    public static double EvalRpn(IStack<double> stack, string expression)
     {
-        var element = stack.Pop();
-        if (double.TryParse(element, out var x))
+        var operationsAndOperands = expression.Split(' ');
+        
+        foreach (var element in operationsAndOperands)
         {
-            return x;
-        }
-        var y = EvalRpn(stack);
-        x = EvalRpn(stack);
-        switch (element)
-        {
-            case "+":
-                x += y;
-                break;
-            case "-":
-                x -= y;
-                break;
-            case "*":
-                x *= y;
-                break;
-            case "/":
-                if (Math.Abs(y) < double.Epsilon)
-                    throw new DivideByZeroException();
-                x /= y;
-                break;
-            default:
+            if (double.TryParse(element, out var number))
+            {
+                stack.Push(number);
+                continue;
+            }
+            if (element is "+" or "-" or "*" or "/")
+            {
+                var firstNumber = stack.Pop();
+                var secondNumber = stack.Pop();
+                switch (element)
+                {
+                    case "+":
+                        stack.Push(firstNumber + secondNumber);
+                        break;
+                    case "-":
+                        stack.Push(secondNumber - firstNumber);
+                        break;
+                    case "*":
+                        stack.Push(firstNumber * secondNumber);
+                        break;
+                    case "/":
+                        if (Math.Abs(firstNumber) < double.Epsilon)
+                        {
+                            throw new DivideByZeroException();
+                        }
+                        stack.Push(secondNumber / firstNumber);
+                        break;
+                }
+            }
+            else
+            {
                 throw new ArgumentException();
+            }
         }
-        return x;
+
+        var result = stack.Pop();
+        if (!stack.IsEmpty())
+        {
+            throw new ArithmeticException("");
+        }
+        return result;
     }
 }

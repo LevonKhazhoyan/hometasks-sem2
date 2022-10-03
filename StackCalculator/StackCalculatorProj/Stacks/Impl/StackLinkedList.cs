@@ -3,25 +3,24 @@
 /// <summary>
 /// Stack class based on Linked List
 /// </summary>
-public class StackLinkedList <T> : IStack<T>
+public class StackLinkedList<T> : IStack<T>
 {
     private Node? _top;
     private int _size = 0;
-    public int Size => _size;
+    public int Size { get; }
 
     /// <summary>
     /// Checks if current <see cref="StackArray{T}"/> instance is empty
     /// </summary>
     public bool IsEmpty()
         => _size == 0;
-    
-    
+
     /// <summary>
     /// Adds an element in current <see cref="StackArray{T}"/> instance
     /// </summary>
     public void Push(T element)
     {
-        if (_top == null)
+        if (element == null)
         {
             return;
         }
@@ -35,8 +34,10 @@ public class StackLinkedList <T> : IStack<T>
     /// </summary>
     public T Pop()
     {
-        if (IsEmpty())
+        if (_top == null)
+        {
             throw new InvalidOperationException();
+        }
         var temp = _top.Element;
         _top = _top.Next;
         _size--;
@@ -48,7 +49,8 @@ public class StackLinkedList <T> : IStack<T>
     /// </summary>
     private class Node
     {
-        public Node(T element, Node next){
+        public Node(T element, Node next)
+        {
             Element = element;
             Next = next;
         }

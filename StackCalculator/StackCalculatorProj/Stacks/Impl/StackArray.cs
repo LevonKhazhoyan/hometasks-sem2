@@ -3,7 +3,7 @@
 /// <summary>
 /// Stack based on Array
 /// </summary>
-public class StackArray <T> : IStack<T>
+public class StackArray<T> : IStack<T>
 {
     private int _top = 0;
     private readonly int _size;
@@ -22,9 +22,8 @@ public class StackArray <T> : IStack<T>
     /// Checks if current <see cref="StackArray{T}"/> instance is empty
     /// </summary>
     public bool IsEmpty()
-    {
-        return _top == 0;
-    }
+    => _top == 0;
+    
 
     /// <summary>
     /// Adds an element in current <see cref="StackArray{T}"/> instance

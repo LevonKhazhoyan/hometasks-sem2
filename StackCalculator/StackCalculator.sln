@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackCalculatorProj", "StackCalculatorProj\StackCalculatorProj.csproj", "{35FB456C-A367-4BEB-85B6-BD7AFD764C4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackCalculatorUnitTests", "StackCalculatorUnitTests\StackCalculatorUnitTests.csproj", "{5CAFD23E-33F6-4D85-8E61-F52077084887}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculatorUnitTests", "CalculatorUnitTests\CalculatorUnitTests.csproj", "{5CAFD23E-33F6-4D85-8E61-F52077084887}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
