@@ -1,4 +1,5 @@
 using SparseVector;
+using NUnit.Framework;
 
 namespace SparseVectorTests;
 
