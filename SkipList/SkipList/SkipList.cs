@@ -1,93 +1,116 @@
-﻿using System.Collections;
+﻿namespace SkipList;
 
-namespace SkipList;
+using System.Collections;
 
+/// <summary>
+/// SkipList realization of IList interface
+/// </summary> 
 public class SkipList<T> : IList<T> where T : IComparable <T>
 {
     private SkipNode head;
-    private int level;
+    private int level { get; set; }
     private int maxLevel;
-    private int count;
-    public int Count
-    {
-        get => count;
-        private set => count = value;
-    }
+    public int Count { get; private set; } 
     public bool IsReadOnly { get; }
     private readonly double probability;
     private static readonly Random random = new();
 
+    /// <summary>
+    /// SkipList constructor
+    /// <param name="maxLevel">Maximum level of list</param>
+    /// </summary> 
     public SkipList(int maxLevel) {
-        head = new SkipNode(default, 0);
+        head = new SkipNode(default!, 0);
         level = -1;
         this.maxLevel = maxLevel;
-        count = 0;
+        Count = 0;
         probability = 0.5;
     }
     
+    /// <summary>
+    /// SkipList constructor
+    /// <param name="maxLevel">Maximum level of list</param>
+    /// <param name="probability">Probability of list</param>
+    /// </summary> 
     public SkipList(int maxLevel, double probability) {
-        head = new SkipNode(default, 0);
+        head = new SkipNode(default!, 0);
         level = -1;
         this.maxLevel = maxLevel;
-        count = 0;
+        Count = 0;
         this.probability = probability;
     }
     
-    private int RandomLevel(double p) {
+    /// <summary>
+    /// Getter of random number from 0 to maxLevel
+    /// <param name="levelProbability">Maximum level of list</param>
+    /// </summary> 
+    private int RandomLevel(double levelProbability) {
         int randomLevel;
-        for (randomLevel = 0; random.NextDouble() < p && randomLevel < maxLevel; randomLevel++) {
+        for (randomLevel = 0; random.NextDouble() < levelProbability && randomLevel < maxLevel; randomLevel++) {
         }
         return randomLevel;
     }
 
+    /// <summary>
+    /// Clears head of list and resets Count
+    /// </summary> 
     public void Clear()
     {
-        head = new SkipNode(default, -1);
-        count = 0;
+        head = new SkipNode(default!, -1);
+        Count = 0;
     }
 
+    /// <summary>
+    /// Checks if list contains item
+    /// </summary> 
     public bool Contains(T item)
     {
-        if (count == 0)
+        if (Count == 0)
         {
             return false;
         }
         
         var x = head;
         for (var i = level; i >= 0; i--) { 
-            while (x.Forward[i] != null && x.Forward[i].Value.CompareTo(item) < 0)
+            while (x.Forward?[i] != null && x.Forward[i].Value?.CompareTo(item) < 0)
             {
                 x = x.Forward[i];
             }
         }
         x = x.Forward?[0];
-        if (x != null && x.Value.CompareTo(item) == 0) { return true; }
+        if (x != null && x.Value?.CompareTo(item) == 0) { return true; }
         { return false; }
     }
 
+    /// <summary>
+    /// Value by index
+    /// </summary> 
     public T this[int index]
     {
         get
         {
-            if (index < 0 || index >= count)
+            if (index < 0 || index >= Count)
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(index));
             }
 
             var counter = 0;
-            var x = head.Forward[0];
+            var x = head.Forward?[0];
             while (counter != index)
             {
-                x = x.Forward[0];
+                x = x?.Forward![0];
                 counter++;
             }
 
-            return x.Value!;
+            return x!.Value!;
         }
         set => throw new NotImplementedException();
     }
 
-    public void Add(T key) {
+    /// <summary>
+    /// Adds item to list
+    /// </summary> 
+    public void Add(T item) {
         var newLevel = RandomLevel(probability);
         if (newLevel > level) { 
             AdjustHead(newLevel);
@@ -95,28 +118,34 @@ public class SkipList<T> : IList<T> where T : IComparable <T>
         var update = new SkipNode[level + 1];
         var x = head;
         for (var i = level; i >= 0; i--) {
-            while (x.Forward?[i] != null && x.Forward[i].Value.CompareTo(key) < 0) {
+            while (x.Forward?[i] != null && x.Forward[i].Value?.CompareTo(item) < 0) {
                 x = x.Forward[i];
             }
             update[i] = x;
         }
-        x = new SkipNode(key, newLevel);
+        x = new SkipNode(item, newLevel);
         for (var i = 0; i <= newLevel; i++) { 
-            x.Forward[i] = update[i].Forward[i];
-            update[i].Forward[i] = x;
+            x.Forward![i] = update[i].Forward![i];
+            update[i].Forward![i] = x;
         }
-        count++;
+        Count++;
     }
 
+    /// <summary>
+    /// Adds new levels of elements
+    /// </summary> 
     private void AdjustHead(int newLevel) {
         var temp = head;
-        head = new SkipNode(default, newLevel);
+        head = new SkipNode(default!, newLevel);
         for (var i = 0; i <= level; i++) {
             head.Forward[i] = temp.Forward[i];
         }
         level = newLevel;
     }
     
+    /// <summary>
+    /// Copy values of skipList in array starting by arrayIndex
+    /// </summary> 
     public void CopyTo(T[] array, int arrayIndex)
     {
         if (array == null)
@@ -129,24 +158,31 @@ public class SkipList<T> : IList<T> where T : IComparable <T>
             throw new ArgumentOutOfRangeException();
         }
 
-        if (array.Length - arrayIndex < count)
+        if (array.Length - arrayIndex < Count)
         {
             throw new ArgumentException();
         }
 
-        var element = head.Forward[0];
+        var element = head.Forward?[0];
         for (var counter = arrayIndex; counter < array.Length; counter++)
         {
-            array[counter] = element.Value!;
-            element = element.Forward[0];
+            array[counter] = element.Value;
+            element = element.Forward?[0];
         }
     }
 
+    /// <summary>
+    /// Insert by index is not implemented in skipList
+    /// </summary> 
     public void Insert(int index, T item)
     {
         throw new NotImplementedException();
     }
 
+    
+    /// <summary>
+    /// Index of item in list
+    /// </summary> 
     public int IndexOf(T item)
     {
         var counter = 0;
@@ -168,6 +204,9 @@ public class SkipList<T> : IList<T> where T : IComparable <T>
         return -1;
     }
 
+    /// <summary>
+    /// Remove item in list
+    /// </summary> 
     public bool Remove(T item)
     {
         var contains = Contains(item);
@@ -191,7 +230,7 @@ public class SkipList<T> : IList<T> where T : IComparable <T>
             level--;
         }
 
-        count--;
+        Count--;
         
         if (contains)
         {
@@ -201,6 +240,9 @@ public class SkipList<T> : IList<T> where T : IComparable <T>
         return false;
     }
     
+    /// <summary>
+    /// Remove item by index 
+    /// </summary> 
     public void RemoveAt(int index)
     {
         var removeElement = this[index];
@@ -208,13 +250,12 @@ public class SkipList<T> : IList<T> where T : IComparable <T>
         Remove(removeElement);
     }
     
+    /// <summary>
+    /// Node class with list of forward nodes and value
+    /// </summary> 
     private class SkipNode {
         private T? value;
-        public T? Value
-        {
-            get => value;
-            set => this.value = value;
-        }
+        public T? Value { get; }
         private SkipNode[]? forward;
         public SkipNode[]? Forward
         {
@@ -234,7 +275,7 @@ public class SkipList<T> : IList<T> where T : IComparable <T>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
 
-    public SkipListEnum GetEnumerator()
+    private SkipListEnum GetEnumerator()
     {
         return new SkipListEnum(this);
     }
@@ -242,7 +283,7 @@ public class SkipList<T> : IList<T> where T : IComparable <T>
     /// <summary>
     /// Class for implementing the IEnumerator<T> interface
     /// </summary>
-    public class SkipListEnum : IEnumerator<T>
+    private class SkipListEnum : IEnumerator<T>
     {
         private readonly SkipList<T> list;
         private SkipNode? head;
