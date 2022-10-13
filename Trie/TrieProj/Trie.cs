@@ -6,14 +6,14 @@
 /// </summary>
 public class Trie
 {
-    private readonly TrieNode Root;
+    private readonly TrieNode root;
 
     /// <summary>
     /// Constructor of <see cref="Trie"/> class instance 
     /// </summary>
     public Trie()
     {
-        Root = new TrieNode();
+        root = new TrieNode();
     }
 
     /// <summary>
@@ -21,18 +21,18 @@ public class Trie
     /// </summary>
     public void Add(string word)
     {
-        var current = Root;
+        var current = root;
 
-        foreach (var ch in word.ToCharArray())
+        foreach (var character in word.ToCharArray())
         {
-            if (current.Children.ContainsKey(ch))
+            if (current.Children.ContainsKey(character))
             {
-                current = current.Children[ch];
+                current = current.Children[character];
             }
             else
             {
-                current.Children.TryAdd(ch, new TrieNode());
-                current = current.Children[ch]; 
+                current.Children.TryAdd(character, new TrieNode());
+                current = current.Children[character]; 
             }
             current.PrefixCount += 1;
         }
@@ -45,13 +45,13 @@ public class Trie
     /// </summary>
     public bool Contains(string word)
     {
-        var current = Root;
+        var current = root;
 
-        foreach (var ch in word.ToCharArray())
+        foreach (var character in word.ToCharArray())
         {
-            if (!current.Children.ContainsKey(ch))
+            if (!current.Children.ContainsKey(character))
                 return false;
-            var node = current.Children[ch];
+            var node = current.Children[character];
             current = node;
         }
 
@@ -63,20 +63,20 @@ public class Trie
     /// </summary>
     public void Remove(string word)
     {
-        if (!Remove(Root, word, 0))
+        if (!Remove(root, word, 0))
         {
             return;
         }
 
-        var current = Root;
-        foreach (var ch in word.ToCharArray())
+        var current = root;
+        foreach (var character in word.ToCharArray())
         {
             current.PrefixCount--;
-            if (!current.Children.ContainsKey(ch))
+            if (!current.Children.ContainsKey(character))
             {
                 return;
             }
-            var node = current.Children[ch];
+            var node = current.Children[character];
             current = node;
         }
     }
@@ -96,21 +96,21 @@ public class Trie
             return current.Children.Count == 0;
         }
         
-        var ch = word[index];
+        var character = word[index];
         
-        if (!current.Children.ContainsKey(ch))
+        if (!current.Children.ContainsKey(character))
         {
             return false;
         }
         
-        var node = current.Children[ch];
+        var node = current.Children[character];
         var shouldDeleteCurrentNode = Remove(node, word, index + 1) && !node.IsWord;
         if (!shouldDeleteCurrentNode) 
         {
             return false;
         }
         
-        current.Children.Remove(ch);
+        current.Children.Remove(character);
         return current.Children.Count == 0;
     }
 
@@ -119,15 +119,15 @@ public class Trie
     /// </summary>
     public int HowManyStartsWithPrefix(string prefix)
     {
-        var current = Root;
+        var current = root;
         
-        foreach (var ch in prefix.ToCharArray())
+        foreach (var character in prefix.ToCharArray())
         {
-            if (!current.Children.ContainsKey(ch))
+            if (!current.Children.ContainsKey(character))
             {
                 return 0;
             }
-            var node = current.Children[ch];
+            var node = current.Children[character];
             current = node;
         }
         
@@ -145,26 +145,17 @@ public class Trie
             get => children;
             set => children = value ?? throw new ArgumentNullException(nameof(value));
         }
-        private bool isWord;
-        public bool IsWord
-        {
-            get => isWord;
-            set => isWord = value;
-        }
-
+        
+        public bool IsWord { get; set; }
+        
         private int prefixCount;
-        public int PrefixCount
-        {
-            get => prefixCount;
-            set => prefixCount = value;
-        }
+        public int PrefixCount { get; set; }
 
         /// <summary>
         /// Constructor of <see cref="TrieNode"/> class instance 
         /// </summary>
         public TrieNode()
         {
-            Children = new Dictionary<char, TrieNode>();
             IsWord = false;
         }
 

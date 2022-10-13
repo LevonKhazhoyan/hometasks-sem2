@@ -21,6 +21,7 @@ public class UnitTests
         _trie.Add("led");
         Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(1));
         _trie.Add("lid");
+        _trie.Remove("lid");
         Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(2));
         Assert.That(_trie.HowManyStartsWithPrefix("li"), Is.EqualTo(1));
     }
