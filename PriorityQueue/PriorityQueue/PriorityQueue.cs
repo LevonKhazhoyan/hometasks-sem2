@@ -38,7 +38,7 @@ public class PriorityQueue<T>
         newElement.Next = currentElement?.Next;
         currentElement!.Next = newElement;
     }
-
+ 
     /// <summary>
     /// Returns the value of the queue head and moves the head to the next element
     /// </summary>
@@ -57,7 +57,7 @@ public class PriorityQueue<T>
 
     
     /// <summary>
-    /// IsEmpty
+    /// IsEmpty method
     /// </summary>
     public bool IsEmpty()
     {
