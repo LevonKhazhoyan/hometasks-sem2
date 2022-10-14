@@ -32,8 +32,8 @@ public class GraphInFileTests
         var (matrixOfLengths, matrixOfConnections) = GraphUtils.ReadFromFile("../../../Graph.txt");
         Assert.Multiple(() =>
         {
-        Assert.That(expectedGraphConnections, Is.EqualTo(matrixOfConnections));
-        Assert.That(expectedGraphLengths, Is.EqualTo(matrixOfLengths));
+            Assert.That(expectedGraphConnections, Is.EqualTo(matrixOfConnections));
+            Assert.That(expectedGraphLengths, Is.EqualTo(matrixOfLengths));
         });
     }
 

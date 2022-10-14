@@ -16,11 +16,6 @@ public class Graph
     public bool[,] MatrixOfConnections { get; }
 
     /// <summary>
-    /// Count of vertices in graph.
-    /// </summary>
-    public int CountOfVertices { get; }
-
-    /// <summary>
     /// Creates a new graph by adjacency matrices.
     /// </summary>
     /// <param name="matrixOfLengths">Matrix of lengths.</param>
@@ -37,7 +32,6 @@ public class Graph
 
         MatrixOfLengths = matrixOfLengths;
         MatrixOfConnections = matrixOfConnections;
-        CountOfVertices = matrixOfLengths.GetLength(0);
     }
 
     /// <summary>
@@ -55,12 +49,11 @@ public class Graph
 
         MatrixOfLengths = matrixOfLengths;
         MatrixOfConnections = matrixOfConnections;
-        CountOfVertices = matrixOfLengths.GetLength(0);
     }
 
     private void DFS(int numberOfVertex, bool[] visited)
     {
-        for (var i = 0; i < CountOfVertices; ++i)
+        for (var i = 0; i < MatrixOfLengths.GetLength(0); ++i)
         {
             if (MatrixOfConnections[numberOfVertex, i] && !visited[i])
             {
@@ -75,7 +68,7 @@ public class Graph
     /// </summary>
     public bool IsConnected()
     {
-        var visited = new bool[CountOfVertices];
+        var visited = new bool[MatrixOfLengths.GetLength(0)];
         DFS(0, visited);
 
         return visited.All(x => x);
@@ -105,23 +98,24 @@ public class Graph
     /// </summary>
     public Graph MakeMaximumSpanningTree()
     {
-        var newLengths = new int[CountOfVertices, CountOfVertices];
-        var newConnections = new bool[CountOfVertices, CountOfVertices];
+        var countOfVertices = MatrixOfLengths.GetLength(0);
+        var newLengths = new int[countOfVertices, countOfVertices];
+        var newConnections = new bool[countOfVertices, countOfVertices];
 
         var edges = new PriorityQueue<Edge>();
-        var visited = new bool[CountOfVertices];
+        var visited = new bool[countOfVertices];
 
-        for (var i = 0; i < CountOfVertices; ++i)
+        for (var i = 0; i < countOfVertices; ++i)
         {
             newConnections[i, i] = true;
         }
 
         var currentVertex = 0;
-        for (var i = 0; i < CountOfVertices - 1; ++i)
+        for (var i = 0; i < countOfVertices - 1; ++i)
         {
             visited[currentVertex] = true;
 
-            for (var j = 0; j < CountOfVertices; ++j)
+            for (var j = 0; j < countOfVertices; ++j)
             {
                 if (!visited[j] && MatrixOfConnections[currentVertex, j])
                 {
@@ -130,8 +124,9 @@ public class Graph
                 }
             }
 
-            Edge maxEdge = null;
-            while (maxEdge == null && !edges.IsEmpty())
+            Edge? maxEdge = null;
+            
+            while (maxEdge == null && !edges.IsEmpty)
             {
                 var firstEdgeInQueue = edges.Dequeue();
                 if (!visited[firstEdgeInQueue.FirstVertex] || !visited[firstEdgeInQueue.SecondVertex])

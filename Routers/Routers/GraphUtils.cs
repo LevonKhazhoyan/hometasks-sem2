@@ -1,7 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿namespace Routers;
 
-namespace Routers;
+using System.Text.RegularExpressions;
 
+/// <summary>
+/// Graph Utils class.
+/// </summary>
 public static class GraphUtils
 {
     /// <summary>
@@ -91,13 +94,14 @@ public static class GraphUtils
     /// <param name="path">Path to the file.</param>
     public static void WriteToFile(Graph graph, string path)
     {
+        var countOfVertices = graph.MatrixOfLengths.GetLength(0);
         using var file = new StreamWriter(path);
 
-        for (var i = 0; i < graph.CountOfVertices; ++i)
+        for (var i = 0; i < countOfVertices; ++i)
         {
             var line = "";
 
-            for (var j = i + 1; j < graph.CountOfVertices; ++j)
+            for (var j = i + 1; j < countOfVertices; ++j)
             {
                 if (graph.MatrixOfConnections[i, j])
                 {

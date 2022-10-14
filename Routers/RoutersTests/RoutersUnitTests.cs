@@ -10,6 +10,12 @@ public class RoutersUnitTests
     public void ConnectedGraphTest()
     {
         RoutersNetwork.MakeOptimalNetwork("../../../RoutersNetwork.txt", "../../../RoutersNetworkResult.txt");
-        Assert.IsTrue(FileComparator.FilesAreEqual("../../../ExpectedNetwork.txt", "../../../RoutersNetworkResult.txt"));
+        Assert.That(FileComparator.FilesAreEqual("../../../ExpectedNetwork.txt", "../../../RoutersNetworkResult.txt"));
+    }
+    
+    [Test]
+    public void DisconnectedGraphTest()
+    {
+        Assert.Throws<ArgumentException>(() => RoutersNetwork.MakeOptimalNetwork("../../../DisconnectedGraph.txt", "../../..FailedResult"));
     }
 }

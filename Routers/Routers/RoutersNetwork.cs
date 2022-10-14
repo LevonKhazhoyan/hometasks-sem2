@@ -11,5 +11,15 @@ public static class RoutersNetwork
     /// <param name="inputFilePath">Path to the input file (given network).</param>
     /// <param name="outputFilePath">Path to the output file (optimal network).</param>
     public static void MakeOptimalNetwork(string inputFilePath, string outputFilePath)
-        => GraphUtils.WriteToFile(new Graph(inputFilePath).MakeMaximumSpanningTree(), outputFilePath);
+    {
+        var network = new Graph(inputFilePath).MakeMaximumSpanningTree();
+        
+        if (!network.IsConnected())
+        {
+            throw new ArgumentException(nameof(network));
+        }
+        
+        GraphUtils.WriteToFile(network, outputFilePath);
+    } 
+        
 }
