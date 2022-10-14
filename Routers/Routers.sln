@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Routers", "Routers\Routers.csproj", "{10732A46-2977-4790-87FB-F4A7747B78BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoutersTests", "RoutersTests\RoutersTests.csproj", "{8171E25F-B0A6-4152-B16B-BB7FE8441F35}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10732A46-2977-4790-87FB-F4A7747B78BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10732A46-2977-4790-87FB-F4A7747B78BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10732A46-2977-4790-87FB-F4A7747B78BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10732A46-2977-4790-87FB-F4A7747B78BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8171E25F-B0A6-4152-B16B-BB7FE8441F35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8171E25F-B0A6-4152-B16B-BB7FE8441F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8171E25F-B0A6-4152-B16B-BB7FE8441F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8171E25F-B0A6-4152-B16B-BB7FE8441F35}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
