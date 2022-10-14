@@ -1,11 +1,12 @@
+namespace SkipListTests;
+
 using SkipList;
 using NUnit.Framework;
-
-namespace SkipListTests;
 
 public class Tests
 {
     private SkipList<int> skipList;
+    
     [SetUp]
     public void Setup()
     {
@@ -21,27 +22,27 @@ public class Tests
     [Test]
     public void AddTest()
     {
-        Assert.IsFalse(skipList.Contains(100));
+        Does.Not.Contain(skipList.Contains(100));
         skipList.Add(100);
-        Assert.IsTrue(skipList.Contains(100));
+        Does.Contain(skipList.Contains(100));
     }
     
     [Test]
     public void RemoveAtTest()
     {
-        Assert.IsTrue(skipList.Contains(40));
+        Does.Contain(skipList.Contains(40));
         skipList.RemoveAt(3);
-        Assert.IsFalse(skipList.Contains(40));
+        Does.Not.Contain(skipList.Contains(40));
     }
     
     [Test]
     public void RemoveAndAddCountTest()
     {
-        Assert.AreEqual(6, skipList.Count);
+        Assert.That(skipList, Has.Count.EqualTo(6));
         skipList.Add(70);
-        Assert.AreEqual(7, skipList.Count);
+        Assert.That(skipList, Has.Count.EqualTo(7));
         skipList.Remove(50);
-        Assert.AreEqual(6, skipList.Count);
+        Assert.That(skipList, Has.Count.EqualTo(6));
     }
     
     [Test]
@@ -49,17 +50,14 @@ public class Tests
     {
         var array = new int[6];
         skipList.CopyTo(array, 0);
-        Assert.AreEqual(30, array[2]);
+        Assert.That(array[2], Is.EqualTo(30));
     }
-    
     
     [Test]
     public void ClearTest()
     {
         skipList.Clear();
-        Assert.AreEqual(0, skipList.Count);
-        Assert.IsFalse(skipList.Contains(40));
+        Assert.That(skipList, Has.Count.EqualTo(0));
+        Does.Not.Contain(skipList.Contains(40));
     }
-    
-    
 }
