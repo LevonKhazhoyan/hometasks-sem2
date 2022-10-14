@@ -6,7 +6,7 @@
 public class StackLinkedList<T> : IStack<T>
 {
     private Node? _top;
-    private int _size = 0;
+    private int _size;
 
     /// <summary>
     /// Checks if current <see cref="StackArray{T}"/> instance is empty
