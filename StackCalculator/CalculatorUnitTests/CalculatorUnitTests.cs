@@ -1,9 +1,9 @@
+namespace CalculatorUnitTests;
+
 using NUnit.Framework;
 using StackCalculatorProj;
 using StackCalculatorProj.Stacks;
 using StackCalculatorProj.Stacks.Impl;
-
-namespace CalculatorUnitTests;
 
 public class Tests
 {
@@ -18,7 +18,7 @@ public class Tests
     
     [Test]
     [TestCaseSource(nameof(CorrectDataForCalculator))]
-    public void CorrectRpnCalculations(IStack<double> testStack, string expression,double response)
+    public void CorrectRpnCalculations(IStack<double> testStack, string expression, double response)
     {
         Assert.That(StackCalculator.EvalRpn(testStack, expression), Is.EqualTo(response));
     }

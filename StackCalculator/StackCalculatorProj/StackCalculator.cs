@@ -47,14 +47,14 @@ public static class StackCalculator
             }
             else
             {
-                throw new ArgumentException();
+                throw new ArgumentException(nameof(expression));
             }
         }
 
         var result = stack.Pop();
         if (!stack.IsEmpty())
         {
-            throw new ArithmeticException("");
+            throw new ArgumentException(nameof(stack));
         }
         return result;
     }

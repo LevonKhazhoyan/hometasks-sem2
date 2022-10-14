@@ -7,7 +7,6 @@ public class StackLinkedList<T> : IStack<T>
 {
     private Node? _top;
     private int _size = 0;
-    public int Size { get; }
 
     /// <summary>
     /// Checks if current <see cref="StackArray{T}"/> instance is empty
@@ -49,12 +48,12 @@ public class StackLinkedList<T> : IStack<T>
     /// </summary>
     private class Node
     {
-        public Node(T element, Node next)
+        public Node(T element, Node? next)
         {
             Element = element;
             Next = next;
         }
         public T Element { get; }
-        public Node Next { get; }
+        public Node? Next { get; }
     }
 }

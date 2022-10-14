@@ -22,9 +22,8 @@ public class StackArray<T> : IStack<T>
     /// Checks if current <see cref="StackArray{T}"/> instance is empty
     /// </summary>
     public bool IsEmpty()
-    => _top == 0;
+        => _top == 0;
     
-
     /// <summary>
     /// Adds an element in current <see cref="StackArray{T}"/> instance
     /// </summary>
@@ -47,7 +46,9 @@ public class StackArray<T> : IStack<T>
         {
             throw new InvalidOperationException();
         }
+        var result = _stack[_top];
+        _stack = _stack.SkipLast(1).ToArray();
         _top--;
-        return _stack[_top];
+        return result;
     }
 }
