@@ -31,7 +31,7 @@ public class StackArray<T> : IStack<T>
     {
         if (element == null)
         {
-            throw new NullReferenceException(nameof(element));
+            throw new InvalidOperationException($"{nameof(element)} is null");
         }
         if (_top > _size)
         {
@@ -53,7 +53,7 @@ public class StackArray<T> : IStack<T>
         var result = _stack[_top];
         if (result == null)
         {
-            throw new NullReferenceException($"{nameof(_stack)} has null element by {_top} index");
+            throw new InvalidOperationException($"{nameof(_stack)} has null element by {_top} index");
         }
         _stack[_top] = default;
         _top--;

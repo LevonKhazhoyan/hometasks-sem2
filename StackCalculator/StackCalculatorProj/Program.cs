@@ -9,13 +9,20 @@ if (str == null)
     return;
 }
 var stack = new StackLinkedList<double>();
-var result = StackCalculator.EvalRpn(stack, str);
+try
+{
+    var result = StackCalculator.EvalRpn(stack, str);
 
-if (!stack.IsEmpty())
-{
-    Console.WriteLine("Incorrect postfix form. Try again");
+    if (!stack.IsEmpty())
+    {
+        Console.WriteLine("Incorrect number of arguments. Try again");
+    }
+    else
+    {
+        Console.WriteLine(result);
+    }
 }
-else
+catch (Exception e) when (e is InvalidOperationException or ArgumentException)
 {
-    Console.WriteLine(result);
+    Console.WriteLine("Invalid operation or operand in RPN calculator");
 }
