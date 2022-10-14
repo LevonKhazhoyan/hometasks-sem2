@@ -5,7 +5,7 @@
 /// </summary>
 public static class Bwt
 {
-    private const int charAmount = 256;
+    private const int charAmount = 2048;
     
     /// <summary>
     /// BWT based on building <see cref="SuffixArray"/> 
@@ -13,7 +13,7 @@ public static class Bwt
     public static (char[], int) BwTransformation(String inputString)
     {
         var inputLength = inputString.Length;
-        var inputSuffix = new SuffixArray(inputString).SufArray;
+        var inputSuffix = new SuffixArray(inputString).ArrayOfSuffixes;
         var bwt = new char[inputLength];
         for (var i = 0; i < inputLength; i++)
         {
@@ -30,13 +30,13 @@ public static class Bwt
     /// </summary>
     public static char[] InverseTransform((char[], int) bwt)
     {
-        
         var (stringInBwtFormat, first) = bwt;
         var next = new int[stringInBwtFormat.Length];
+        
         var count = new int[charAmount + 1];
         var sortedBwt = new char[stringInBwtFormat.Length];
-        foreach (var el in stringInBwtFormat)
-            count[el + 1]++;
+        foreach (var element in stringInBwtFormat)
+            count[element + 1]++;
         for (var i = 0; i < charAmount; i++)
             count[i + 1] += count[i];
         for (var i = 0; i < stringInBwtFormat.Length; i++) {

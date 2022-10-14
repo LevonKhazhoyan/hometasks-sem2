@@ -5,65 +5,62 @@
 /// </summary>
 public class SuffixArray
 {
-    private int[] suffixArray;
-    public int[] SufArray => suffixArray;
-    private readonly Suffix startString; 
-
+    public int[] ArrayOfSuffixes { get; }
+    
     /// <summary>
     /// Constructor of <see cref="SuffixArray"/>
     /// </summary>
-    public SuffixArray(String str)
+    public SuffixArray(string word)
     {
-        var n = str.Length;
-        var suffix = new Suffix[n];
+        var wordLength = word.Length;
+        var suffix = new Suffix[wordLength];
         
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < wordLength; i++)
         {
-            suffix[i] = new Suffix(i, str[i] - str[n-1], 0);
+            suffix[i] = new Suffix(i, word[i] - word[wordLength - 1], 0);
         }
 
-        for (var i = 0; i < n; i++)
-            suffix[i].next = i + 1 < n ? suffix[i + 1].rank : -1;
+        for (var i = 0; i < wordLength; i++)
+            suffix[i].Next = i + 1 < wordLength ? suffix[i + 1].Rank : -1;
 
         Array.Sort(suffix);
-        var index = new int[n];
+        var index = new int[wordLength];
 
-        for (var length = 4; length < 2 * n; length <<= 1)
+        for (var length = 4; length < 2 * wordLength; length <<= 1)
         {
             var rank = 0;
-            var prev = suffix[0].rank;
-            suffix[0].rank = rank;
-            index[suffix[0].index] = 0;
-            for (var i = 1; i < n; i++)
+            var previous = suffix[0].Rank;
+            suffix[0].Rank = rank;
+            index[suffix[0].Index] = 0;
+            for (var i = 1; i < wordLength; i++)
             {
-                if (suffix[i].rank == prev && suffix[i].next == suffix[i - 1].next)
+                if (suffix[i].Rank == previous && suffix[i].Next == suffix[i - 1].Next)
                 {
-                    prev = suffix[i].rank;
-                    suffix[i].rank = rank;
+                    previous = suffix[i].Rank;
+                    suffix[i].Rank = rank;
                 }
                 else
                 {
-                    prev = suffix[i].rank;
-                    suffix[i].rank = ++rank;
+                    previous = suffix[i].Rank;
+                    suffix[i].Rank = ++rank;
                 }
 
-                index[suffix[i].index] = i;
+                index[suffix[i].Index] = i;
             }
 
-            for (var i = 0; i < n; i++)
+            for (var i = 0; i < wordLength; i++)
             {
-                var nextP = suffix[i].index + length / 2;
-                suffix[i].next = nextP < n ? suffix[index[nextP]].rank : -1;
+                var nextP = suffix[i].Index + length / 2;
+                suffix[i].Next = nextP < wordLength ? suffix[index[nextP]].Rank : -1;
             }
 
             Array.Sort(suffix);
         }
 
-        startString = suffix[0];
-        suffixArray = new int[n];
+        ArrayOfSuffixes = new int[wordLength];
 
-        for (var i = 0; i < n; i++)
-            suffixArray[i] = suffix[i].index;
+        for (var i = 0; i < wordLength; i++)
+            ArrayOfSuffixes[i] = suffix[i].Index;
     }
 
     /// <summary>
@@ -71,18 +68,18 @@ public class SuffixArray
     /// </summary>
     private class Suffix : IComparable<Suffix>
     {
-        public readonly int index;
-        public int rank;
-        public int next;
+        public int Index { get; }
+        public int Rank { get; set; }
+        public int Next { get; set; }
 
         /// <summary>
         /// Constructor of <see cref="Suffix(int, int, int)"/> class instance
         /// </summary>
         public Suffix(int index, int rank, int next)
         {
-            this.index = index;
-            this.rank = rank;
-            this.next = next;
+            Index = index;
+            Rank = rank;
+            Next = next;
         }
 
         /// <summary>
@@ -90,7 +87,7 @@ public class SuffixArray
         /// </summary>
         public int CompareTo(Suffix? that)
         {
-            return rank != that?.rank ? rank.CompareTo(that?.rank) : rank.CompareTo(that.next);
+            return Rank != that?.Rank ? Rank.CompareTo(that?.Rank) : Rank.CompareTo(that.Next);
         }
     }
 }
