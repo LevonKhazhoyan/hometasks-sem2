@@ -1,3 +1,4 @@
+using NuGet.Frameworks;
 using TrieProj;
 using NUnit.Framework;
 
@@ -22,31 +23,40 @@ public class UnitTests
         Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(1));
         _trie.Add("lid");
         _trie.Remove("lid");
-        Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(2));
-        Assert.That(_trie.HowManyStartsWithPrefix("li"), Is.EqualTo(1));
+        Assert.Multiple(() =>
+        {
+            Assert.That(_trie.HowManyStartsWithPrefix("l"), Is.EqualTo(1));
+            Assert.That(_trie.HowManyStartsWithPrefix("li"), Is.EqualTo(0));
+        });
     }
     
     [Test]
     public void ContainsTest()
     {
-        Assert.True(_trie.Contains("test"));
-        Assert.False(_trie.Contains("false test"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(_trie.Contains("test"));
+            Assert.That(_trie.Contains("false test"), Is.EqualTo(false));
+        });
     }
     
     [Test]
     public void AddTest()
     {
-        Assert.False(_trie.Contains("add test"));
+        Assert.That(_trie.Contains("add test"), Is.EqualTo(false));
         _trie.Add("add test");
-        Assert.True(_trie.Contains("add test"));
+        Assert.That(_trie.Contains("add test"));
     }
     
     [Test]
     public void RemoveTest()
     {
-        Assert.True(_trie.Contains("test"));
+        Assert.That(_trie.Contains("test"), Is.EqualTo(true));
         _trie.Remove("test");
-        Assert.False(_trie.Contains("test"));
-        Assert.False(_trie.Contains("t"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(_trie.Contains("test"), Is.EqualTo(false));
+            Assert.That(_trie.Contains("t"), Is.EqualTo(false));
+        });
     }
 }

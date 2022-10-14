@@ -6,18 +6,10 @@
 /// </summary>
 public class Trie
 {
-    private readonly TrieNode root;
+    private readonly TrieNode root = new();
 
     /// <summary>
-    /// Constructor of <see cref="Trie"/> class instance 
-    /// </summary>
-    public Trie()
-    {
-        root = new TrieNode();
-    }
-
-    /// <summary>
-    /// Adds a word in instance of <see cref="Trie"/> class by character
+    /// Adds a word by character
     /// </summary>
     public void Add(string word)
     {
@@ -31,7 +23,7 @@ public class Trie
             }
             else
             {
-                current.Children.TryAdd(character, new TrieNode());
+                current.Children.Add(character, new TrieNode());
                 current = current.Children[character]; 
             }
             current.PrefixCount += 1;
@@ -41,7 +33,7 @@ public class Trie
     }
 
     /// <summary>
-    /// Checks if instance of <see cref="Trie"/> class contains word
+    /// Checks if contains word
     /// </summary>
     public bool Contains(string word)
     {
@@ -50,7 +42,9 @@ public class Trie
         foreach (var character in word.ToCharArray())
         {
             if (!current.Children.ContainsKey(character))
+            {
                 return false;
+            }
             var node = current.Children[character];
             current = node;
         }
@@ -63,26 +57,11 @@ public class Trie
     /// </summary>
     public void Remove(string word)
     {
-        if (!Remove(root, word, 0))
-        {
-            return;
-        }
-
-        var current = root;
-        foreach (var character in word.ToCharArray())
-        {
-            current.PrefixCount--;
-            if (!current.Children.ContainsKey(character))
-            {
-                return;
-            }
-            var node = current.Children[character];
-            current = node;
-        }
+        Remove(root, word, 0);
     }
 
     /// <summary>
-    /// Recursive method for removing word from <see cref="Trie"/> class instance
+    /// Recursive method for removing word
     /// </summary>
     private static bool Remove(TrieNode current, string word, int index)
     {
@@ -103,6 +82,8 @@ public class Trie
             return false;
         }
         
+        current.PrefixCount--;
+        
         var node = current.Children[character];
         var shouldDeleteCurrentNode = Remove(node, word, index + 1) && !node.IsWord;
         if (!shouldDeleteCurrentNode) 
@@ -115,7 +96,7 @@ public class Trie
     }
 
     /// <summary>
-    /// Counts how many words starts with prefix in <see cref="Trie"/> class instance
+    /// Counts how many words starts with prefix
     /// </summary>
     public int HowManyStartsWithPrefix(string prefix)
     {
@@ -139,28 +120,21 @@ public class Trie
     /// </summary>
     private class TrieNode
     {
-        private Dictionary<char, TrieNode> children;
-        public Dictionary<char, TrieNode> Children
-        {
-            get => children;
-            set => children = value ?? throw new ArgumentNullException(nameof(value));
-        }
-        
+        public readonly Dictionary<char, TrieNode> Children;
         public bool IsWord { get; set; }
-        
-        private int prefixCount;
         public int PrefixCount { get; set; }
 
         /// <summary>
-        /// Constructor of <see cref="TrieNode"/> class instance 
+        /// Constructor
         /// </summary>
         public TrieNode()
         {
+            Children = new Dictionary<char, TrieNode>();
             IsWord = false;
         }
 
         /// <summary>
-        /// Constructor of <see cref="TrieNode"/> class instance 
+        /// Constructor
         /// </summary>
         public TrieNode(Dictionary<char, TrieNode> children, bool isWord)
         {
